@@ -1,9 +1,9 @@
-version: 2.1
+vversion: 2.1
 
 executors:
   dotnet-executor:
     docker:
-      - image: mcr.microsoft.com/dotnet/sdk:8.0
+      - image: cimg/dotnet:8.0-node
 
 jobs:
   build-and-scan:
@@ -27,6 +27,10 @@ jobs:
               /d:sonar.login=$SONAR_TOKEN \
               /d:sonar.host.url="https://sonarcloud.io" \
               /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+
+      - run:
+          name: Restore NuGet packages
+          command: dotnet restore AMLCustomerPaymentsPortal.sln
 
       - run:
           name: Build Project
