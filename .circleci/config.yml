@@ -3,7 +3,7 @@ version: 2.1
 executors:
   dotnet-executor:
     docker:
-      - image: cimg/dotnet:8.0-node
+      - image: cimg/dotnet:8.0.1-node  # includes both .NET 8 SDK and Node.js
 
 jobs:
   build-and-scan:
@@ -19,6 +19,10 @@ jobs:
             source $BASH_ENV
 
       - run:
+          name: Restore NuGet Packages
+          command: dotnet restore AMLCustomerPaymentsPortal.sln
+
+      - run:
           name: SonarCloud Begin Analysis
           command: |
             dotnet-sonarscanner begin \
@@ -27,10 +31,6 @@ jobs:
               /d:sonar.login=$SONAR_TOKEN \
               /d:sonar.host.url="https://sonarcloud.io" \
               /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
-
-      - run:
-          name: Restore NuGet packages
-          command: dotnet restore AMLCustomerPaymentsPortal.sln
 
       - run:
           name: Build Project
