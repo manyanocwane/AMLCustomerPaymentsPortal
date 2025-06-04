@@ -3,7 +3,7 @@ version: 2.1
 executors:
   dotnet-executor:
     docker:
-      - image: cimg/dotnet:8.0.1-node  # includes both .NET 8 SDK and Node.js
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
 
 jobs:
   build-and-scan:
